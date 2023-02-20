@@ -1,0 +1,15 @@
+{
+  "namespace": "avro",
+  "type": "record",
+  "name": "Participant",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    }
+  ]
+}
