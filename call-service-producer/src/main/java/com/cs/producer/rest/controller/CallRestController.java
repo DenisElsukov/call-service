@@ -1,5 +1,6 @@
-package com.cs.producer.inbound.controller;
+package com.cs.producer.rest.controller;
 
+import com.cs.producer.rest.service.CallRestServiceImpl;
 import org.openapitools.api.CallsApi;
 import org.openapitools.model.Call;
 import org.springframework.http.HttpStatus;
@@ -15,16 +16,16 @@ import javax.validation.Valid;
 @RequestMapping("/v1")
 public class CallRestController implements CallsApi {
 
-    CallRestService restService;
+    CallRestServiceImpl restService;
 
-    public CallRestController(final CallRestService restService) {
+    public CallRestController(final CallRestServiceImpl restService) {
         this.restService = restService;
     }
 
     @Override
     @PostMapping("/calls")
     public ResponseEntity<String> createCall(@RequestBody @Valid final Call call) {
-        ResponseEntity responseEntity = null;
+        ResponseEntity<String> responseEntity = null;
         try {
             responseEntity = restService.createCall(call);
         }

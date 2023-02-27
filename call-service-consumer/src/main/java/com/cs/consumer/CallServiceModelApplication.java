@@ -1,4 +1,4 @@
-package com.orion.csm.cs_model;
+package com.cs.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

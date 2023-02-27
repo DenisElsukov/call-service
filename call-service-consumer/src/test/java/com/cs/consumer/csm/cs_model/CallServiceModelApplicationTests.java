@@ -1,4 +1,4 @@
-package com.orion.csm.cs_model;
+package com.cs.consumer.csm.cs_model;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
