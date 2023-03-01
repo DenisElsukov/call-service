@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "DeleteCall",
+  "namespace": "avro.org.openapitools.model",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string"
+    }
+  ]
+}

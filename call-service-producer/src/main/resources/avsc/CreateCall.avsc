@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Call",
+  "name": "CreateCall",
   "namespace": "avro.org.openapitools.model",
   "fields": [
     {

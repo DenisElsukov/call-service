@@ -7,9 +7,11 @@ import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -19,18 +21,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@PropertySource("classpath:application.properties")
 public class KafkaConfig {
 
-    @Value("${com.cs.producer.kafka.config.topic.name}")
-    String topicName;
-    @Value("${com.cs.producer.kafka.config.topic.partitions}")
-    Integer numPartitions;
-    @Value("${com.cs.producer.kafka.config.topic.replication}")
-    Short replicationFactor;
-    @Value("${com.cs.producer.kafka.config.bootstrap_servers}")
-    private String bootstrapAddress;
-    @Value("${com.cs.producer.kafka.config.schema_registry}")
-    private String schemaRegistry;
+    private final String createCallTopic;
+    private final String deleteCallTopic;
+    private final Integer numPartitions;
+    private final Short replicationFactor;
+    private final String bootstrapAddress;
+    private final String schemaRegistry;
+
+    @Autowired
+    public KafkaConfig(
+        @Value("${com.cs.producer.kafka.config.topic.create_call}") final String createCallTopic,
+        @Value("${com.cs.producer.kafka.config.topic.delete_call}") final String deleteCallTopic,
+        @Value("${com.cs.producer.kafka.config.topic.partitions}") final Integer numPartitions,
+        @Value("${com.cs.producer.kafka.config.topic.replication}") final Short replicationFactor,
+        @Value("${com.cs.producer.kafka.config.bootstrap_servers}") final String bootstrapAddress,
+        @Value("${com.cs.producer.kafka.config.schema_registry}") final String schemaRegistry
+    ) {
+        this.createCallTopic = createCallTopic;
+        this.deleteCallTopic = deleteCallTopic;
+        this.numPartitions = numPartitions;
+        this.replicationFactor = replicationFactor;
+        this.bootstrapAddress = bootstrapAddress;
+        this.schemaRegistry = schemaRegistry;
+    }
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
@@ -40,8 +56,12 @@ public class KafkaConfig {
     }
 
     @Bean
-    NewTopic myTopic() {
-        return new NewTopic(topicName, numPartitions, replicationFactor);
+    NewTopic createCallTopic() {
+        return new NewTopic(createCallTopic, numPartitions, replicationFactor);
+    }
+    @Bean
+    NewTopic deleteCallTopic() {
+        return new NewTopic(deleteCallTopic, numPartitions, replicationFactor);
     }
 
     @Bean
