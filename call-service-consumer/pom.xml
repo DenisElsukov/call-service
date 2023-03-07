@@ -15,6 +15,7 @@
     <description>Test project for UC3Connector. Model</description>
     <properties>
         <java.version>11</java.version>
+        <start-class>com.cs.consumer.CallServiceModelApplication</start-class>
     </properties>
 
     <repositories>

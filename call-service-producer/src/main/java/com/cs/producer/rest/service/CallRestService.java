@@ -19,14 +19,14 @@ public class CallRestService implements RestService<Call> {
     @Override
     public ResponseEntity<String> create(Call call) {
         SpecificRecord createCall = AvroConverter.convertCreateCallToAvro(call);
-        kafkaProducer.sendRecordToBroker(createCall);
+        kafkaProducer.sendRecordToBroker(call.getId(), createCall);
         return new ResponseEntity<>("Create call request has been processed", HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<String> delete(String callId) {
         SpecificRecord deleteCall = AvroConverter.convertDeleteCallToAvro(callId);
-        kafkaProducer.sendRecordToBroker(deleteCall);
+        kafkaProducer.sendRecordToBroker(callId, deleteCall);
         return new ResponseEntity<>("Delete call request has been processed", HttpStatus.OK);
     }
 }

@@ -16,18 +16,16 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 @Component
 @RequiredArgsConstructor
 @Log4j2
-public class KafkaProducer<T> {
+public class KafkaProducer {
 
     private final NewTopic createCallTopic;
     private final NewTopic deleteCallTopic;
+    private final NewTopic defaultTopic;
     private final KafkaTemplate<String, SpecificRecord> kafkaTemplate;
 
-    public void sendRecordToBroker(SpecificRecord specificRecord) {
+    public void sendRecordToBroker(String key, SpecificRecord specificRecord) {
         NewTopic topic = getTopic(specificRecord);
-        ProducerRecord<String, SpecificRecord> producerRecord = new ProducerRecord<>(topic.name(),
-            specificRecord.get(specificRecord.getSchema().getField("id").pos()).toString(),
-            specificRecord
-        );
+        ProducerRecord<String, SpecificRecord> producerRecord = new ProducerRecord<>(topic.name(), key, specificRecord);
         ListenableFuture<SendResult<String, SpecificRecord>> future = kafkaTemplate.send(producerRecord);
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
@@ -45,8 +43,10 @@ public class KafkaProducer<T> {
     private NewTopic getTopic(SpecificRecord specificRecord) {
         if (specificRecord instanceof CreateCall) {
             return createCallTopic;
-        } else {
+        } else if (specificRecord instanceof DeleteCall){
             return deleteCallTopic;
+        } else {
+            return defaultTopic;
         }
     }
 }

@@ -26,6 +26,7 @@ public class KafkaConfig {
 
     private final String createCallTopic;
     private final String deleteCallTopic;
+    private final String defaultTopic;
     private final Integer numPartitions;
     private final Short replicationFactor;
     private final String bootstrapAddress;
@@ -35,6 +36,7 @@ public class KafkaConfig {
     public KafkaConfig(
         @Value("${com.cs.producer.kafka.config.topic.create_call}") final String createCallTopic,
         @Value("${com.cs.producer.kafka.config.topic.delete_call}") final String deleteCallTopic,
+        @Value("${com.cs.producer.kafka.config.topic.default}") final String defaultTopic,
         @Value("${com.cs.producer.kafka.config.topic.partitions}") final Integer numPartitions,
         @Value("${com.cs.producer.kafka.config.topic.replication}") final Short replicationFactor,
         @Value("${com.cs.producer.kafka.config.bootstrap_servers}") final String bootstrapAddress,
@@ -42,6 +44,7 @@ public class KafkaConfig {
     ) {
         this.createCallTopic = createCallTopic;
         this.deleteCallTopic = deleteCallTopic;
+        this.defaultTopic = defaultTopic;
         this.numPartitions = numPartitions;
         this.replicationFactor = replicationFactor;
         this.bootstrapAddress = bootstrapAddress;
@@ -62,6 +65,10 @@ public class KafkaConfig {
     @Bean
     NewTopic deleteCallTopic() {
         return new NewTopic(deleteCallTopic, numPartitions, replicationFactor);
+    }
+    @Bean
+    NewTopic defaultTopic() {
+        return new NewTopic(defaultTopic, numPartitions, replicationFactor);
     }
 
     @Bean
